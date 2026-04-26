@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>С Днём Рождения! 🎂</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+:root {
+  --gold:#f5c842;
+  --gold2:#e8a020;
+  --rose:#e8547a;
+  --violet:#9b5de5;
+  --cream:#fff9f0;
+  --dark:#1a0e2e;
+  --mid:#2d1a4a;
+}
+body {
+  min-height:100vh;
+  background:radial-gradient(ellipse at 30% 20%, #2d1a4a 0%, #1a0e2e 60%, #0d0818 100%);
+  font-family:'Cormorant Garamond',serif;
+  overflow:hidden;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+/* CANVAS */
+#bg-canvas { position:fixed; inset:0; pointer-events:none; z-index:0; }
+
+/* CONTAINER */
+.box {
+  position:relative; z-index:10;
+  width:min(480px,93vw);
+  background:rgba(255,249,240,0.06);
+  backdrop-filter:blur(20px);
+  -webkit-backdrop-filter:blur(20px);
+  border:1px solid rgba(245,200,66,0.25);
+  border-radius:30px;
+  padding:52px 44px 50px;
+  box-shadow:
+    0 0 60px rgba(245,200,66,0.12),
+    0 0 120px rgba(155,93,229,0.08),
+    inset 0 1px 0 rgba(255,255,255,0.1);
+  text-align:center;
+  min-height:400px;
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+}
+
+/* SLIDES */
+.slide { display:none; flex-direction:column; align-items:center; gap:22px; width:100%;
+  animation:fadeUp .65s cubic-bezier(.22,1,.36,1) both; }
+.slide.active { display:flex; }
+@keyframes fadeUp {
+  from { opacity:0; transform:translateY(28px) scale(.96); }
+  to   { opacity:1; transform:translateY(0) scale(1); }
+}
+
+/* TYPE */
+.title {
+  font-family:'Playfair Display',serif;
+  font-size:clamp(1.6rem,5.5vw,2.2rem);
+  color:var(--cream);
+  line-height:1.25;
+  text-shadow:0 0 30px rgba(245,200,66,0.5);
+}
+.title em { color:var(--gold); font-style:italic; }
+.sub {
+  font-size:clamp(1rem,3.5vw,1.2rem);
+  color:rgba(245,200,66,0.75);
+  font-style:italic;
+  line-height:1.6;
+}
+
+/* EMOJI */
+.emoji {
+  font-size:clamp(3.5rem,13vw,5.2rem);
+  line-height:1;
+  filter:drop-shadow(0 0 20px rgba(245,200,66,0.55));
+  animation:fl 3.2s ease-in-out infinite;
+}
+@keyframes fl { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-12px)} }
+
+/* DIVIDER */
+.div {
+  width:70px; height:1px;
+  background:linear-gradient(90deg,transparent,var(--gold),transparent);
+}
+
+/* BUTTONS */
+.btn {
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.08rem; letter-spacing:.04em;
+  padding:14px 30px; border-radius:50px;
+  cursor:pointer; border:none; outline:none;
+  transition:transform .15s, box-shadow .15s;
+  user-select:none;
+}
+.btn-gold {
+  background:linear-gradient(135deg,var(--gold) 0%,var(--gold2) 100%);
+  color:var(--dark); font-weight:700;
+  box-shadow:0 4px 24px rgba(245,200,66,0.45);
+}
+.btn-gold:hover { transform:translateY(-2px); box-shadow:0 8px 32px rgba(245,200,66,0.65); }
+.btn-gold:active { transform:scale(.96); }
+.btn-outline {
+  background:rgba(255,255,255,0.07);
+  color:var(--gold);
+  border:1px solid rgba(245,200,66,0.35);
+}
+.btn-outline:hover { background:rgba(255,255,255,0.13); }
+.btn-violet {
+  background:linear-gradient(135deg,#9b5de5,#6a1de8);
+  color:#fff;
+  box-shadow:0 4px 24px rgba(155,93,229,0.45);
+}
+.btn-violet:hover { transform:translateY(-2px); box-shadow:0 8px 32px rgba(155,93,229,0.65); }
+
+/* GIFT BTN */
+.gift-btn {
+  background:none; border:none; cursor:pointer;
+  font-size:clamp(3rem,13vw,5.5rem);
+  filter:drop-shadow(0 0 18px rgba(245,200,66,0.55));
+  transition:transform .2s, filter .2s;
+  animation:fl 3s ease-in-out infinite .3s;
+  line-height:1;
+}
+.gift-btn:hover { transform:scale(1.15); filter:drop-shadow(0 0 32px rgba(245,200,66,.9)); }
+.gift-btn:active { transform:scale(1.05); }
+.lbl { font-size:.82rem; color:rgba(245,200,66,.55); letter-spacing:.1em; text-transform:uppercase; margin-top:-10px; }
+
+/* WISH BOX */
+.wish {
+  background:rgba(255,255,255,0.05);
+  border:1px solid rgba(245,200,66,.18);
+  border-radius:20px;
+  padding:28px 26px;
+  position:relative; overflow:hidden;
+}
+.wish::before {
+  content:'';
+  position:absolute; inset:0;
+  background:linear-gradient(135deg,rgba(245,200,66,.06) 0%,rgba(155,93,229,.04) 100%);
+  border-radius:20px;
+}
+.wish-text {
+  font-family:'Playfair Display',serif;
+  font-size:clamp(1.1rem,4vw,1.45rem);
+  color:var(--cream);
+  line-height:1.6; font-style:italic;
+  position:relative;
+  text-shadow:0 0 18px rgba(245,200,66,.35);
+}
+.wish-sign {
+  font-family:'Playfair Display',serif;
+  font-size:1.05rem; color:var(--gold);
+  margin-top:16px; font-style:italic; position:relative;
+}
+
+/* CANDLES */
+.candles { display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin:4px 0; }
+.candle { font-size:2rem; animation:fl 2s ease-in-out infinite; }
+.candle:nth-child(2n) { animation-delay:.3s; }
+.candle:nth-child(3n) { animation-delay:.6s; }
+
+/* CAKE */
+.cake-wrap { position:relative; display:inline-block; cursor:pointer; }
+.cake-emoji { font-size:clamp(4rem,15vw,6rem); display:block; transition:transform .25s; filter:drop-shadow(0 0 20px rgba(245,200,66,.55)); }
+.cake-wrap:hover .cake-emoji { transform:scale(1.1); }
+.cake-shine { position:absolute; inset:-4px; border-radius:50%; background:radial-gradient(ellipse,rgba(245,200,66,.25) 0%,transparent 70%); animation:pulse 2s ease-in-out infinite; pointer-events:none; }
+@keyframes pulse { 0%,100%{opacity:.5;transform:scale(1)} 50%{opacity:1;transform:scale(1.1)} }
+
+/* COUNTER */
+.counter-row { display:flex; gap:18px; justify-content:center; }
+.cnt-block { display:flex; flex-direction:column; align-items:center; gap:4px; }
+.cnt-num {
+  font-family:'Playfair Display',serif;
+  font-size:2.4rem; color:var(--gold);
+  text-shadow:0 0 20px rgba(245,200,66,.6);
+  min-width:60px;
+}
+.cnt-lbl { font-size:.78rem; color:rgba(245,200,66,.5); letter-spacing:.08em; text-transform:uppercase; }
+
+/* FIREWORKS */
+.fw { position:fixed; inset:0; pointer-events:none; z-index:20; }
+.spark {
+  position:absolute;
+  width:6px; height:6px;
+  border-radius:50%;
+  opacity:0;
+}
+
+/* PHOTO */
+.photo {
+  width:150px; height:150px; border-radius:50%;
+  border:3px solid var(--gold);
+  box-shadow:0 0 0 6px rgba(245,200,66,.18), 0 0 40px rgba(245,200,66,.35);
+  overflow:hidden; background:linear-gradient(135deg,var(--mid),var(--dark));
+  display:flex; align-items:center; justify-content:center;
+  font-size:5rem;
+  animation:pulseR 2.5s ease-in-out infinite;
+}
+@keyframes pulseR {
+  0%,100%{box-shadow:0 0 0 6px rgba(245,200,66,.18),0 0 40px rgba(245,200,66,.35)}
+  50%{box-shadow:0 0 0 14px rgba(245,200,66,.06),0 0 60px rgba(245,200,66,.6)}
+}
+
+/* BALLOON ROW */
+.balloons { font-size:2.5rem; display:flex; gap:4px; }
+.balloons span { animation:fl 2.5s ease-in-out infinite; display:inline-block; }
+.balloons span:nth-child(2){animation-delay:.25s}
+.balloons span:nth-child(3){animation-delay:.5s}
+.balloons span:nth-child(4){animation-delay:.75s}
+</style>
+</head>
+<body>
+
+<canvas id="bg-canvas"></canvas>
+<div class="fw" id="fw"></div>
+
+<div class="box">
+
+  <!-- S1: Intro -->
+  <div class="slide active" id="s1">
+    <div class="balloons"><span>🎈</span><span>🎉</span><span>🎊</span><span>🎈</span></div>
+    <h1 class="title">Сегодня твой<br><em>особенный день!</em></h1>
+    <div class="div"></div>
+    <p class="sub">Готова узнать,<br>что тебя ждёт? ✨</p>
+    <button class="btn btn-gold" onclick="go(2)">Конечно! 🎂</button>
+  </div>
+
+  <!-- S2: Сколько лет -->
+  <div class="slide" id="s2">
+    <div class="emoji" style="font-size:3.5rem">🎂</div>
+    <h1 class="title">Тебе уже<br><em id="age-num">...</em> лет!</h1>
+    <div class="candles" id="candles-row"></div>
+    <div class="div"></div>
+    <p class="sub">И ты прекрасна<br>как никогда 🌸</p>
+    <button class="btn btn-gold" onclick="go(3)">Дальше 🎁</button>
+  </div>
+
+  <!-- S3: Торт — задуй свечи -->
+  <div class="slide" id="s3">
+    <h1 class="title"><em>Задуй свечи</em><br>и загадай желание!</h1>
+    <div class="div"></div>
+    <div class="cake-wrap" onclick="blowCandles()" id="cake-wrap">
+      <span class="cake-emoji" id="cake-e">🎂</span>
+      <div class="cake-shine"></div>
+    </div>
+    <p class="lbl">нажми на торт</p>
+    <p class="sub" id="blow-hint">🕯️ Нажми и загадай желание...</p>
+  </div>
+
+  <!-- S4: Пожелание -->
+  <div class="slide" id="s4">
+    <div class="emoji">💝</div>
+    <div class="wish">
+      <p class="wish-text">«Пусть этот день будет наполнен радостью, теплом и улыбками. Ты заслуживаешь всего самого лучшего — каждый день, каждый момент!»</p>
+      <p class="wish-sign">С любовью и теплом ❤️</p>
+    </div>
+    <button class="btn btn-violet" onclick="go(5)">Что ещё? 🌟</button>
+  </div>
+
+  <!-- S5: Подарок -->
+  <div class="slide" id="s5">
+    <h1 class="title">Для тебя<br><em>есть подарок!</em></h1>
+    <button class="gift-btn" onclick="openGift()">🎁</button>
+    <p class="lbl">нажми на подарок</p>
+  </div>
+
+  <!-- S6: Открытый подарок — письмо -->
+  <div class="slide" id="s6">
+    <div class="emoji" style="font-size:3rem">💌</div>
+    <div class="wish">
+      <p class="wish-text">«С Днём Рождения, моя дорогая! Ты делаешь мою жизнь ярче и счастливее. Я так рад, что ты есть в моей жизни — пусть все твои мечты сбываются!»</p>
+      <p class="wish-sign">Навсегда твой 🌹</p>
+    </div>
+    <button class="btn btn-gold" onclick="go(7)">Финал ✨</button>
+  </div>
+
+  <!-- S7: Финал -->
+  <div class="slide" id="s7">
+    <div class="photo" id="photo-el">🥰</div>
+    <h1 class="title"><em>С Днём Рождения!</em></h1>
+    <div class="div"></div>
+    <p class="sub">Ты — лучшее, что есть<br>в этом мире 🌸💕</p>
+    <div class="balloons" style="font-size:2rem">
+      <span>🎉</span><span>🎊</span><span>🥳</span><span>🎈</span>
+    </div>
+  </div>
+
+</div>
+
+<script>
+/* ── CANVAS PARTICLES ── */
+const cv = document.getElementById('bg-canvas');
+const cx = cv.getContext('2d');
+let particles = [];
+
+function resize(){cv.width=innerWidth;cv.height=innerHeight;}
+resize(); window.addEventListener('resize',resize);
+
+const SHAPES = ['star','circle','diamond','confetti'];
+const COLORS = ['#f5c842','#e8a020','#9b5de5','#e8547a','#fff','#a0eaff'];
+
+function rp(){
+  return {
+    x:Math.random()*cv.width, y:cv.height+20,
+    size:4+Math.random()*14,
+    speed:.3+Math.random()*1.1,
+    drift:(Math.random()-.5)*.7,
+    rot:Math.random()*Math.PI*2,
+    rotS:(Math.random()-.5)*.04,
+    opacity:.15+Math.random()*.6,
+    color:COLORS[Math.floor(Math.random()*COLORS.length)],
+    shape:SHAPES[Math.floor(Math.random()*SHAPES.length)],
+  };
+}
+
+function drawStar(ctx,x,y,r,a){
+  ctx.save();ctx.translate(x,y);ctx.rotate(a);
+  ctx.beginPath();
+  for(let i=0;i<5;i++){
+    const ang=i*Math.PI*2/5-Math.PI/2;
+    const ang2=ang+Math.PI/5;
+    ctx.lineTo(Math.cos(ang)*r,Math.sin(ang)*r);
+    ctx.lineTo(Math.cos(ang2)*(r*.42),Math.sin(ang2)*(r*.42));
+  }
+  ctx.closePath();ctx.restore();
+}
+
+function drawDiamond(ctx,x,y,r,a){
+  ctx.save();ctx.translate(x,y);ctx.rotate(a);
+  ctx.beginPath();
+  ctx.moveTo(0,-r);ctx.lineTo(r*.6,0);ctx.lineTo(0,r);ctx.lineTo(-r*.6,0);
+  ctx.closePath();ctx.restore();
+}
+
+for(let i=0;i<36;i++){const p=rp();p.y=Math.random()*cv.height;particles.push(p);}
+
+function animPart(){
+  cx.clearRect(0,0,cv.width,cv.height);
+  particles.forEach((p,i)=>{
+    p.y-=p.speed; p.x+=p.drift; p.rot+=p.rotS;
+    if(p.y<-20) particles[i]=rp();
+    cx.globalAlpha=p.opacity;
+    cx.fillStyle=p.color;
+    if(p.shape==='star'){drawStar(cx,p.x,p.y,p.size,p.rot);cx.fill();}
+    else if(p.shape==='diamond'){drawDiamond(cx,p.x,p.y,p.size,p.rot);cx.fill();}
+    else if(p.shape==='confetti'){
+      cx.save();cx.translate(p.x,p.y);cx.rotate(p.rot);
+      cx.fillRect(-p.size*.5,-p.size*.25,p.size,p.size*.5);
+      cx.restore();
+    } else {
+      cx.beginPath();cx.arc(p.x,p.y,p.size*.5,0,Math.PI*2);cx.fill();
+    }
+  });
+  cx.globalAlpha=1;
+  requestAnimationFrame(animPart);
+}
+animPart();
+
+/* ── FIREWORKS ── */
+function firework(x,y){
+  const fw=document.getElementById('fw');
+  const colors=['#f5c842','#e8a020','#9b5de5','#e8547a','#fff','#a0eaff','#ff6b9d'];
+  for(let i=0;i<24;i++){
+    const s=document.createElement('div');
+    s.className='spark';
+    const c=colors[Math.floor(Math.random()*colors.length)];
+    s.style.cssText=`left:${x}px;top:${y}px;background:${c};`;
+    fw.appendChild(s);
+    const ang=Math.random()*Math.PI*2;
+    const spd=60+Math.random()*100;
+    const tx=Math.cos(ang)*spd; const ty=Math.sin(ang)*spd;
+    s.animate([
+      {opacity:1,transform:'translate(0,0) scale(1)'},
+      {opacity:0,transform:`translate(${tx}px,${ty}px) scale(0)`}
+    ],{duration:700+Math.random()*400,easing:'cubic-bezier(0,0,.58,1)'})
+    .onfinish=()=>s.remove();
+  }
+}
+
+function burstFireworks(){
+  const pts=[[.25,.3],[.75,.25],[.5,.55],[.2,.65],[.8,.6],[.5,.15]];
+  pts.forEach(([rx,ry],i)=>{
+    setTimeout(()=>firework(rx*innerWidth,ry*innerHeight),i*180);
+  });
+}
+
+/* ── AGE ── */
+const BIRTH_YEAR=2000;
+const age=new Date().getFullYear()-BIRTH_YEAR;
+document.getElementById('age-num').textContent=age;
+const cr=document.getElementById('candles-row');
+const candleCount=Math.min(age,10);
+for(let i=0;i<candleCount;i++){
+  const d=document.createElement('div');
+  d.className='candle';d.textContent='🕯️';cr.appendChild(d);
+}
+
+/* ── SLIDE ── */
+function go(n){
+  document.querySelectorAll('.slide').forEach(s=>s.classList.remove('active'));
+  const el=document.getElementById('s'+n);
+  el.classList.add('active');
+  el.style.animation='none';el.offsetHeight;el.style.animation='';
+  if(n===7){setTimeout(burstFireworks,400);}
+}
+
+/* ── BLOW CANDLES ── */
+let blown=false;
+function blowCandles(){
+  if(blown)return;blown=true;
+  document.getElementById('cake-e').textContent='🥳';
+  document.getElementById('blow-hint').textContent='🎉 Желание загадано! Пусть сбудется!';
+  burstFireworks();
+  setTimeout(()=>go(4),1400);
+}
+
+/* ── GIFT ── */
+function openGift(){
+  burstFireworks();
+  setTimeout(()=>go(6),500);
+}
+</script>
+</body>
+</html>
