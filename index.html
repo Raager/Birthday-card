@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>С Днём Рождения! 🎂</title>
+<title>З Днем Народження! 🎂</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet">
 <style>
 * { margin:0; padding:0; box-sizing:border-box; }
@@ -224,67 +224,67 @@ body {
   <!-- S1: Intro -->
   <div class="slide active" id="s1">
     <div class="balloons"><span>🎈</span><span>🎉</span><span>🎊</span><span>🎈</span></div>
-    <h1 class="title">Сегодня твой<br><em>особенный день!</em></h1>
+    <h1 class="title">Сьогодні твій<br><em>особливий день!</em></h1>
     <div class="div"></div>
-    <p class="sub">Готова узнать,<br>что тебя ждёт? ✨</p>
-    <button class="btn btn-gold" onclick="go(2)">Конечно! 🎂</button>
+    <p class="sub">Готова дізнатись,<br>що тебе чекає? ✨</p>
+    <button class="btn btn-gold" onclick="go(2)">Звістно! 🎂</button>
   </div>
 
   <!-- S2: Сколько лет -->
   <div class="slide" id="s2">
     <div class="emoji" style="font-size:3.5rem">🎂</div>
-    <h1 class="title">Тебе уже<br><em id="age-num">...</em> лет!</h1>
+    <h1 class="title">Тобі вже<br><em id="age-num">...</em> років!</h1>
     <div class="candles" id="candles-row"></div>
     <div class="div"></div>
-    <p class="sub">И ты прекрасна<br>как никогда 🌸</p>
-    <button class="btn btn-gold" onclick="go(3)">Дальше 🎁</button>
+    <p class="sub">І ти прекрасна<br>як ніколи 🌸</p>
+    <button class="btn btn-gold" onclick="go(3)">Далі 🎁</button>
   </div>
 
   <!-- S3: Торт — задуй свечи -->
   <div class="slide" id="s3">
-    <h1 class="title"><em>Задуй свечи</em><br>и загадай желание!</h1>
+    <h1 class="title"><em>Задуй свічки</em><br>і загадай бажання!</h1>
     <div class="div"></div>
     <div class="cake-wrap" onclick="blowCandles()" id="cake-wrap">
       <span class="cake-emoji" id="cake-e">🎂</span>
       <div class="cake-shine"></div>
     </div>
-    <p class="lbl">нажми на торт</p>
-    <p class="sub" id="blow-hint">🕯️ Нажми и загадай желание...</p>
+    <p class="lbl">натисни на торт</p>
+    <p class="sub" id="blow-hint">🕯️ Натисни і загадай бажання...</p>
   </div>
 
   <!-- S4: Пожелание -->
   <div class="slide" id="s4">
     <div class="emoji">💝</div>
     <div class="wish">
-      <p class="wish-text">«Пусть этот день будет наполнен радостью, теплом и улыбками. Ты заслуживаешь всего самого лучшего — каждый день, каждый момент!»</p>
-      <p class="wish-sign">С любовью и теплом ❤️</p>
+      <p class="wish-text">«Нехай цей день буде наповнений радістью, теплом и посмішками. Ти заслуговуєш всього найкращого — кожен день, кожен момент!»</p>
+      <p class="wish-sign">З любовью і теплом ❤️</p>
     </div>
-    <button class="btn btn-violet" onclick="go(5)">Что ещё? 🌟</button>
+    <button class="btn btn-violet" onclick="go(5)">Що ще? 🌟</button>
   </div>
 
   <!-- S5: Подарок -->
   <div class="slide" id="s5">
-    <h1 class="title">Для тебя<br><em>есть подарок!</em></h1>
+    <h1 class="title">Для тебе<br><em>є подарунок!</em></h1>
     <button class="gift-btn" onclick="openGift()">🎁</button>
-    <p class="lbl">нажми на подарок</p>
+    <p class="lbl">натисни на подарунок</p>
   </div>
 
   <!-- S6: Открытый подарок — письмо -->
   <div class="slide" id="s6">
     <div class="emoji" style="font-size:3rem">💌</div>
     <div class="wish">
-      <p class="wish-text">«С Днём Рождения, моя дорогая! Ты делаешь мою жизнь ярче и счастливее. Я так рад, что ты есть в моей жизни — пусть все твои мечты сбываются!»</p>
-      <p class="wish-sign">Навсегда твой 🌹</p>
+      <p class="wish-text">«С Днем Народження, моя кохана! Ти робиш моє життя краще і счастливіше. Я так рад, що ти є в моєму житті — нехай всі твої мрії сбуваються!»</p>
+      <p class="wish-sign">Назавжди твій 🌹</p>
     </div>
-    <button class="btn btn-gold" onclick="go(7)">Финал ✨</button>
+    <button class="btn btn-gold" onclick="go(7)">Фінал ✨</button>
   </div>
 
   <!-- S7: Финал -->
   <div class="slide" id="s7">
     <div class="photo" id="photo-el">🥰</div>
-    <h1 class="title"><em>С Днём Рождения!</em></h1>
+    <h1 class="title"><em>С Днем Народження!</em></h1>
     <div class="div"></div>
-    <p class="sub">Ты — лучшее, что есть<br>в этом мире 🌸💕</p>
+    <p class="sub">Ти — найкраще, що є<br>на цій землі 🌸💕</p>
     <div class="balloons" style="font-size:2rem">
       <span>🎉</span><span>🎊</span><span>🥳</span><span>🎈</span>
     </div>
